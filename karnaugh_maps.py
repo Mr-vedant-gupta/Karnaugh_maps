@@ -20,6 +20,12 @@ import copy
 def wrap_index(l: list, x: int, y: int):
     return l[x % 4][y % 4]
 
+
+def pretty_print(l):
+    for i in l:
+        print(i)
+
+
 def wrap_update(l: list, x: int, y: int, value):
     l[x % 4][y % 4] = value
 
@@ -143,7 +149,7 @@ for row in range(4):
         pos = (row, 0)
         dim = (2, 4)
         score = score_rectangle(pos, dim, k_map)
-        rectangle = (4, score, pos, dim)
+        rectangle = (8, score, pos, dim)
         update_best_rectangles(rectangle, best_rectangles)
 
 # find all 4x2 rectangles
@@ -152,7 +158,7 @@ for column in range(4):
         pos = (0, column)
         dim = (4, 2)
         score = score_rectangle(pos, dim, k_map)
-        rectangle = (4, score, pos, dim)
+        rectangle = (8, score, pos, dim)
         update_best_rectangles(rectangle, best_rectangles)
 
 
@@ -189,15 +195,16 @@ def update_k_map(k_map, rectangle):
 # 2 - remove all the one's covered by this rectangle in the k_map
 # 3 - stop if k_map is empty, else loop
 spanning_set = []
-print("the provided k_map is: ", k_map)
+print("the provided k_map is: ")
+pretty_print(k_map)
 while not is_k_map_empty(k_map):
     smallest_max_rect = find_smallest_maximal_rect(k_map, best_rectangles)
     spanning_set.append(smallest_max_rect)
     k_map = update_k_map(k_map, smallest_max_rect)
 
 
-print("the best rectangles for every vertex are: ", best_rectangles)
-print("the minimal spanning set of rectangles is: ", spanning_set)
+#print("the best rectangles for every vertex are: ", best_rectangles)
+print("a (possibly) minimal spanning set of rectangles is: ", spanning_set)
 
 # The last step is to find the minterms for each rectangle
 # Assume the variables are A, B, C, D in that order
@@ -227,7 +234,7 @@ for rectangle in spanning_set:
         else:
             minterm += X[1] + "'"
     minterms.append(minterm)
-print("MAGIC MAGIC!!! the optimal boolean expression (probably) is: ")
+print("the optimal boolean expression (probably) is: ")
 print(" + ".join(minterms))
 
 
